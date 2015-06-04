@@ -2,11 +2,20 @@
 	<head>
 		<title>emailr</title>
 		<link rel="stylesheet" href="styles.css">
+		<script src="node_modules/angular/angular.min.js"></script>
 	</head>
-	<body>
+	<body ng-app="app" ng-controller="emailControl">
 		<div class="main-container">
 			<div class="header">
 				<h1>emailr</h1>
+				<div class="menu">
+					<div ng-click="toggleMenu()">Menu</div>
+					<ul ng-show="showMenu">
+						<li>One</li>
+						<li>Two</li>
+						<li>Three</li>
+					</ul>
+				</div>
 			</div>
 			<div class="header-push"></div>
 			
@@ -15,5 +24,33 @@
 			<div class="footer-push"></div>
 		</div>
 		<div class="footer"></div>
+		
+		<script>
+			var socket = new WebSocket("ws://localhost:8080");
+					
+			socket.onopen = logOpen;
+			socket.onmessage = logMessage;
+			socket.onclose = logClose;
+					
+			function logOpen() {
+				console.log("connected to WebSocket");
+			}
+
+			function logMessage(msg) {
+				console.log(msg);	   
+			}
+
+			function logClose() {
+				console.log("connection to WebSocket failed");
+			}
+			
+			var app = angular.module('app', []).
+				controller("emailControl", function emailControl($scope){
+					$scope.showMenu = false;
+					$scope.toggleMenu = function(){
+						$scope.showMenu = !$scope.showMenu;
+					};
+				});
+		</script>
 	</body>
 </html>

@@ -17,10 +17,17 @@ wss.on('connection', function (ws) {
     });
 
     ws.on("close", function () {
-        console.log("connection to " + ws.connectionID + " lost");
+        console.log("connection lost");
     });
 
-    console.log("connected to " + ws.connectionID);
+    console.log("new connection made!");
 });
 
 console.log("server open on: ws:localhost:8080");
+
+var open = require("open");
+
+open("index.html", function(err){
+	if(err)throw err;
+	console.log("browser closed");
+});
