@@ -18,8 +18,29 @@
 				</div>
 			</div>
 			<div class="header-push"></div>
-			
-				<h1>Hi</h2>
+				<div class="box" ng-show="page=='welcome'">
+					<h1>Hi</h2>
+					<div class="button" ng-click="go('my-emails')">My emails</div>
+					<div class="button" ng-click="go('email')">New email</div>
+				</div>
+				<div class="box" ng-show="page=='email'">
+					<input placeholder="to"/>
+					<input placeholder="cc"/>
+					<input placeholder="bcc" />
+					<input placeholder="subject" />
+					<textarea placeholder="body"></textarea>
+					<div class="button" ng-click="back()">Back</div>
+				</div>
+				<div class="box" ng-show="page=='my-emails'">
+					<div class="e-mail-container">
+						<div class="e-mail-list-item" ng-repeat="email in emails">
+							<span class="e-mail-list-column">{{email.from}}</span>
+							<span class="e-mail-list-column">{{email.time}}</span>
+							<span class="e-mail-list-column">{{email.subject}}</span>
+						</div>
+					</div>
+					<div class="button" ng-click="back()">Back</div>
+				</div>
 		
 			<div class="footer-push"></div>
 		</div>
@@ -46,10 +67,42 @@
 			
 			var app = angular.module('app', []).
 				controller("emailControl", function emailControl($scope){
+					$scope.emails = [];
+					
+					$scope.addEmail = function(from, time, subject, body){
+						if(time == null){
+							time = (new Date()).toGMTString();
+						}
+						
+						var newMail = {from: from, time: time, subject: subject, body: body};
+						
+						$scope.emails.push(newMail);				
+					}
+					
+					$scope.addEmail("bob",null,"all those things", "wooohoo, nice to meet you today!");
+					$scope.addEmail("john",null,"all those things", "wooohoo, nice to meet you today!");
+				
 					$scope.showMenu = false;
 					$scope.toggleMenu = function(){
 						$scope.showMenu = !$scope.showMenu;
 					};
+					
+					$scope.history = [];
+					$scope.page = "welcome";
+					
+					$scope.go = function(txt){
+						$scope.history.push($scope.page);
+					
+						$scope.page = txt;
+					}
+					
+					$scope.back = function(){
+						if($scope.history.length == 0){
+							$scope.page = "welcome";
+							return;
+						}
+						$scope.page = $scope.history.pop();
+					}
 				});
 		</script>
 	</body>

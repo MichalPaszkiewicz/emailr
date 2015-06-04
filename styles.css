@@ -62,3 +62,63 @@ html,body{
 .menu ul li{
 	padding:10px;
 }
+
+.box{
+	margin:20px;
+}
+
+.button{
+	background: black;
+	color: white;
+	padding: 10px;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.button:hover, .e-mail-list-item:hover{
+	background: rgb(60,60,60);
+}
+
+input, textarea{
+	border-radius: 10px;
+	padding: 10px;
+	font-size: 18px;
+	margin: 10px 0;
+}
+
+input:focus, textarea:focus{
+	background:rgb(217, 223, 229);
+	outline:none;
+}
+
+input{
+	display: block;
+	width: 100%;
+	border: none;
+	box-shadow: 0 0 2px 0;
+}
+
+textarea{
+	min-width: 100%;
+	max-width: 100%;
+	min-height: 200px;
+}
+
+.e-mail-list-column{
+	min-width: 250px;
+	display: inline-block;
+	padding: 5px;
+	text-align: center;
+	border-right: 1px white solid;
+}
+
+.e-mail-container{
+	margin: 10px 0;
+	color: white;
+}
+
+.e-mail-list-item{
+	background: black;
+	cursor: pointer;
+	margin: 2px 0;
+}
