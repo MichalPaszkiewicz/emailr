@@ -1,5 +1,6 @@
 # User data
-UserData/*.txt
+UserData/*
 
-# node modules
+# node 
 node_modules
+npm-debug.log

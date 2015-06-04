@@ -1,0 +1,29 @@
+html,body{
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+
+.main-container{
+	min-height: 100%;
+}
+
+.header, .footer, .header-push, .footer-push{
+	clear: both;
+	height: 50px;
+	width: 100%;
+}
+
+.header, .footer{
+	background: black;
+	color: white;
+}
+
+.header{
+	position: absolute;
+}
+
+.footer{
+	margin-top: -50px;
+}
