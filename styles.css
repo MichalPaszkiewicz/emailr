@@ -27,10 +27,12 @@ html,body{
 }
 
 .header h1{
-	margin: auto;
 	padding: 0;
 	line-height: 50px;
 	font-size: 75px;
+	float:left;
+	margin:0;
+	cursor: pointer;
 }
 
 .footer{

@@ -7,7 +7,7 @@
 	<body ng-app="app" ng-controller="emailControl">
 		<div class="main-container">
 			<div class="header">
-				<h1>emailr</h1>
+				<h1 ng-click="go('welcome')">emailr</h1>
 				<div class="menu">
 					<div ng-click="toggleMenu()" class="menu-click">Menu</div>
 					<ul ng-show="showMenu">
@@ -32,7 +32,6 @@
 					<input placeholder="subject" ng-model="currentOutMail.subject"/>
 					<textarea placeholder="body" ng-model="currentOutMail.body"></textarea>
 					<div class="button" ng-click="send()">Send</div>
-					<div class="button" ng-click="clearCurrentOutMail()">Clear</div>
 				</div>
 				<div class="box" ng-show="page=='my-emails'">
 					<div class="button negative" ng-click="back()">Back</div>
@@ -44,6 +43,7 @@
 							<span class="e-mail-list-column">{{email.subject}}</span>
 						</div>
 					</div>
+					<div class="button" ng-click="go('email')">New email</div>
 				</div>
 				<div class="box" ng-show="page=='email-details'">
 					<div class="button negative" ng-click="back()">Back</div>
