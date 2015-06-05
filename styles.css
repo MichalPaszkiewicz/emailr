@@ -80,8 +80,16 @@ html,body{
 	cursor: pointer;
 }
 
+.button.negative{
+	background: rgb(97, 17, 17);
+}
+
 .button:hover, .e-mail-list-item:hover{
 	background: rgb(60,60,60);
+}
+
+.button.negative:hover{
+	background: rgb(120,17,17);
 }
 
 input, textarea{
@@ -92,7 +100,7 @@ input, textarea{
 	background: rgb(45, 44, 41);
 	border: none;
 	box-shadow: 0 0 2px 0 black;
-	color: gray;
+	color: lightgray;
 }
 
 input:focus, textarea:focus{
@@ -130,10 +138,26 @@ textarea{
 	margin: 2px 0;
 }
 
+::-webkit-input-placeholder {
+   color: dimgrey;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: dimgrey;  
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: dimgrey;  
+}
+
+:-ms-input-placeholder {  
+   color: dimgrey;  
+}
+
 input,
 textarea {
     color: rgb(249, 247, 152);
-    text-shadow: 0px 0px 0px darkgrey;
+    text-shadow: 0px 0px 0px lightgray;
     -webkit-text-fill-color: transparent;
 }
 
