@@ -3,6 +3,7 @@
 		<title>emailr</title>
 		<link rel="stylesheet" href="styles.css">
 		<script src="node_modules/angular/angular.min.js"></script>
+		<script src="message.js"></script>
 	</head>
 	<body ng-app="app" ng-controller="emailControl">
 		<div class="main-container">
@@ -31,7 +32,7 @@
 					<input placeholder="bcc" ng-model="currentOutMail.bcc"/>
 					<input placeholder="subject" ng-model="currentOutMail.subject"/>
 					<textarea placeholder="body" ng-model="currentOutMail.body"></textarea>
-					<div class="button" ng-click="send()">Send</div>
+					<div class="button" ng-click="sendMail()">Send</div>
 				</div>
 				<div class="box" ng-show="page=='my-emails'">
 					<div class="button negative" ng-click="back()">Back</div>
@@ -60,35 +61,6 @@
 		<div class="footer"></div>
 		
 		<script>
-			var socket = new WebSocket("ws://localhost:8080");
-					
-			socket.onopen = logOpen;
-			socket.onmessage = logMessage;
-			socket.onclose = logClose;
-					
-			function logOpen() {
-				console.log("connected to WebSocket");
-			}
-
-			function logMessage(msg) {
-				console.log(msg);	   
-			}
-
-			function logClose() {
-				console.log("connection to WebSocket failed");
-			}
-			
-			var Email = function(from, time, subject, body, to, cc, bcc){
-				this.from = from;
-				this.time = time;
-				this.subject = subject;
-				this.body = body;
-				this.cc = cc;
-				this.bcc = bcc;
-				this.to = to;
-				return this;
-			}
-			
 			var app = angular.module('app', []).
 				controller("emailControl", function emailControl($scope){
 					$scope.emails = [];
@@ -146,6 +118,11 @@
 					
 					$scope.clearCurrentOutMail = function(){
 						$scope.currentOutMail = new Email("","","","");
+					}				
+					
+					$scope.sendMail = function(){
+						$scope.currentOutMail.time = (new Date()).toGMTString();
+						sendMessage("email", $scope.currentOutMail);
 					}
 				});
 		</script>
