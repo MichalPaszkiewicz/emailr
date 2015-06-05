@@ -9,7 +9,7 @@
 			<div class="header">
 				<h1>emailr</h1>
 				<div class="menu">
-					<div ng-click="toggleMenu()">Menu</div>
+					<div ng-click="toggleMenu()" class="menu-click">Menu</div>
 					<ul ng-show="showMenu">
 						<li>One</li>
 						<li>Two</li>
@@ -24,21 +24,30 @@
 					<div class="button" ng-click="go('email')">New email</div>
 				</div>
 				<div class="box" ng-show="page=='email'">
-					<input placeholder="to"/>
-					<input placeholder="cc"/>
-					<input placeholder="bcc" />
-					<input placeholder="subject" />
-					<textarea placeholder="body"></textarea>
+					<input placeholder="to" ng-model="currentOutMail.to"/>
+					<input placeholder="cc" ng-model="currentOutMail.cc"/>
+					<input placeholder="bcc" ng-model="currentOutMail.bcc"/>
+					<input placeholder="subject" ng-model="currentOutMail.subject"/>
+					<textarea placeholder="body" ng-model="currentOutMail.body"></textarea>
 					<div class="button" ng-click="back()">Back</div>
 				</div>
 				<div class="box" ng-show="page=='my-emails'">
+					<div class="search-bar"><input placeholder="search" ng-model="search" /></div>
 					<div class="e-mail-container">
-						<div class="e-mail-list-item" ng-repeat="email in emails">
+						<div class="e-mail-list-item" ng-repeat="email in emails | filter:search" ng-click="goToMail(email)">
 							<span class="e-mail-list-column">{{email.from}}</span>
 							<span class="e-mail-list-column">{{email.time}}</span>
 							<span class="e-mail-list-column">{{email.subject}}</span>
 						</div>
 					</div>
+					<div class="button" ng-click="back()">Back</div>
+				</div>
+				<div class="box" ng-show="page=='email-details'">
+					<div class="line">{{currentEmail.from}}</div>
+					<div class="line">{{currentEmail.time}}</div>
+					<div class="line">{{currentEmail.subject}}</div>
+					<div class="text">{{currentEmail.body}}</div>
+					<div class="button" ng-click="reply()">Reply</div>
 					<div class="button" ng-click="back()">Back</div>
 				</div>
 		
@@ -65,16 +74,30 @@
 				console.log("connection to WebSocket failed");
 			}
 			
+			var Email = function(from, time, subject, body, to, cc, bcc){
+				this.from = from;
+				this.time = time;
+				this.subject = subject;
+				this.body = body;
+				this.cc = cc;
+				this.bcc = bcc;
+				this.to = to;
+				return this;
+			}
+			
 			var app = angular.module('app', []).
 				controller("emailControl", function emailControl($scope){
 					$scope.emails = [];
+					
+					$scope.currentEmail = new Email("","","","");
+					$scope.currentOutMail = new Email("","","","");
 					
 					$scope.addEmail = function(from, time, subject, body){
 						if(time == null){
 							time = (new Date()).toGMTString();
 						}
 						
-						var newMail = {from: from, time: time, subject: subject, body: body};
+						var newMail = new Email(from, time, subject, body);
 						
 						$scope.emails.push(newMail);				
 					}
@@ -89,6 +112,19 @@
 					
 					$scope.history = [];
 					$scope.page = "welcome";
+					
+					$scope.goToMail = function(mail){
+						$scope.currentEmail = mail;
+						$scope.go("email-details");
+					}
+					
+					$scope.reply = function(){
+						var replyMail = new Email("","","RE: " + $scope.currentEmail.subject, "", $scope.currentEmail.from, $scope.currentEmail.cc, $scope.currentEmail.bcc);
+						
+						$scope.currentOutMail = replyMail;
+						
+						$scope.go("email");
+					}
 					
 					$scope.go = function(txt){
 						$scope.history.push($scope.page);
