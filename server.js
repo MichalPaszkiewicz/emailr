@@ -1,4 +1,5 @@
 var WebSocket = require('ws');
+var emailr = require("emailr");
 
 var WebSocketServer = WebSocket.Server;
 
@@ -13,6 +14,17 @@ wss.on('connection', function (ws) {
         }
         console.log(logmsg);
 
+		var dataJSON = JSON.parse(message);
+		
+		switch(dataJSON.type){
+			case "email":
+				var theMsg = dataJSON.message;
+				emailr.generateEmail(theMsg.subject,theMsg.body); 
+				break;
+			default:
+				console.log("Unknown message type");
+		}
+		
         //ws.send();
     });
 

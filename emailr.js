@@ -18,7 +18,7 @@ function sendEmail(subject, msg){
 	server.send({
 	   text:    "This text will not be displayed", 
 	   from:    "Michal's node app noreply.testemail@gmail.com", 
-	   to:      "michal.paszkiewicz@geeks.ltd.uk",
+	   to:      "michalpaszkiewicz@hotmail.com",
 	   subject: subject,
 	   attachment: 
 	   [
@@ -27,23 +27,20 @@ function sendEmail(subject, msg){
 	}, function(err, message) { console.log(err || "e-mail sent"); });
 }
 
-function generateEmail(){
+exports.generateEmail = function(subject, text){
 	fs.readFile('template.html', function(err, data){
 		console.log("Getting template");
 		if(err){ throw err; }
 		
 		var dataString = data.toString();
 		
-		var subject = "Do you like my signature?";
-		var txt = "Please tell me it's awesome.";
+		var txt = text;
 		var msg = w(subject,"h1") + w(txt,"p");
-		console.log("messsage: \r\n" + msg);
+		console.log("message: \r\n" + msg);
 		
 		var finalMsg = dataString.replace(/{TEXT}/g,msg);
 		
 		sendEmail(subject, finalMsg);
 	});
 }
-
-generateEmail();
 
