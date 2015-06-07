@@ -1,5 +1,5 @@
 var WebSocket = require('ws');
-var emailr = require("emailr");
+var emailr = require("./emailr.js");
 
 var WebSocketServer = WebSocket.Server;
 
