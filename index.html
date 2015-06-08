@@ -9,17 +9,18 @@
 		<div class="main-container">
 			<div class="header">
 				<h1 ng-click="go('welcome')">emailr</h1>
-				<div class="menu">
+				<div class="menu" ng-class="{curveDown: showMenu}" >
 					<div ng-click="toggleMenu()" class="menu-click">Menu</div>
-					<ul ng-show="showMenu">
-						<li>One</li>
+					<ul ng-show="showMenu" ng-click="showMenu = false">
+						<li ng-click="showNotifications = !showNotifications">Toggle notifications</li>
 						<li>Two</li>
 						<li>Three</li>
 					</ul>
 				</div>
 			</div>
-			<div class="notifications-box" ng-show="showNotifications" ng-click="showNotifications=false">
-				<div class="notification-row" ng-repeat="notification in notifications">{{notification.text}}</div>
+			<div class="notifications-box" ng-class="{hidden:!showNotifications}">
+				<div class="notification-row" ng-repeat="notification in notifications">@{{notification.time}}: {{notification.text}}</div>
+				<div class="button negative" ng-click="showNotifications=false">Close</div>
 			</div>
 			<div class="header-push"></div>
 			<div class="box" ng-show="page=='welcome'">
@@ -81,7 +82,7 @@
 						$scope.emails.push(newMail);				
 					}
 					
-					$scope.addEmail("bob",null,"all those things", "wooohoo, nice to meet you today!");
+					$scope.addEmail("michal.paszkiewicz@geeks.ltd.uk",null,"testing", "wooohoo, nice to meet you today!");
 					$scope.addEmail("john",null,"all those things", "wooohoo, nice to meet you today!");
 				
 					$scope.showMenu = false;
@@ -132,7 +133,7 @@
 					
 					$scope.showNotifications = false;
 					
-					logProcess.push(function(msg){ $scope.notifications.push({text: msg.data}); $scope.showNotifications = true; $scope.$apply(); })
+					logProcess.push(function(msg){ $scope.notifications.push({time: (new Date()).toGMTString(), text: msg.data}); $scope.showNotifications = true; $scope.$apply(); })
 				});
 		</script>
 	</body>
