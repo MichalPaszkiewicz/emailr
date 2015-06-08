@@ -12,20 +12,48 @@
 				<div class="menu" ng-class="{curveDown: showMenu}" >
 					<div ng-click="toggleMenu()" class="menu-click">Menu</div>
 					<ul ng-show="showMenu" ng-click="showMenu = false">
-						<li ng-click="showNotifications = !showNotifications">Toggle notifications</li>
-						<li>Two</li>
-						<li>Three</li>
+						<li ng-click="showNotifications = !showNotifications">Notifications</li>
+						<li ng-click="showSettings = !showSettings">Settings</li>
+						<li ng-click="showContacts = !showContacts; contactMode = 'list'">Contacts</li>
 					</ul>
 				</div>
 			</div>
-			<div class="notifications-box" ng-class="{hidden:!showNotifications}">
-				<div class="notification-top">
+			<div class="modal-cover" ng-show="showNotifications || showSettings || showContacts"></div>
+			<div class="modal" ng-class="{hidden:!showContacts}">
+				<div class="modal-top">
+					<div class="button negative" ng-click="showContacts=false">Close</div>
+					<div class="button" ng-click="contactMode='add'; currentContact={}">Add new</div>
+				</div>
+				<div class="modal-top-push"></div>
+				<h1>Contacts</h1>
+				<div class="contact-list" ng-show="contactMode=='list'">
+					<div class="contact-row" ng-repeat="contact in contacts">
+						<span class="list-column">{{contact.name}}</span>
+						<span class="list-column">{{contact.email}}</span>
+					</div>
+				</div>
+				<div class="add-contact" ng-show="contactMode=='add'">
+					<input ng-model="currentContact.name" placeholder="name">
+					<input ng-model="currentContact.email" placeholder="email">
+					<div class="button" ng-click="addNewContact()">Add</div>
+				</div>
+			</div>
+			<div class="modal" ng-class="{hidden:!showNotifications}">
+				<div class="modal-top">
 					<div class="button negative" ng-click="showNotifications=false">Close</div>
 					<div class="button negative" ng-click="notifications=[]">Clear</div>
 				</div>
-				<div class="notification-top-push"></div>
-				<div class="notification-row" ng-repeat="notification in notifications">@{{notification.time}}: {{notification.text}}</div>
-				
+				<div class="modal-top-push"></div>
+				<div class="notification-row" ng-repeat="notification in notifications">@{{notification.time}}: {{notification.text}}</div>	
+			</div>
+			<div class="modal" ng-class="{hidden:!showSettings}">
+				<div class="modal-top">
+					<div class="button negative" ng-click="showSettings=false">Close</div>
+				</div>
+				<div class="modal-top-push"></div>
+				<h1>Settings</h1>
+				<input ng-model="settings.user" placeholder="User">
+				<input ng-model="settings.password" placeholder="Password">
 			</div>
 			<div class="header-push"></div>
 			<div class="box" ng-show="page=='welcome'">
@@ -48,9 +76,9 @@
 				<div class="search-bar"><input placeholder="search" ng-model="search" /></div>
 				<div class="e-mail-container">
 					<div class="e-mail-list-item" ng-repeat="email in emails | filter:search" ng-click="goToMail(email)">
-						<span class="e-mail-list-column">{{email.from}}</span>
-						<span class="e-mail-list-column">{{email.time}}</span>
-						<span class="e-mail-list-column">{{email.subject}}</span>
+						<span class="list-column">{{email.from}}</span>
+						<span class="list-column">{{email.time}}</span>
+						<span class="list-column">{{email.subject}}</span>
 					</div>
 				</div>
 				<div class="button" ng-click="go('email')">New email</div>
@@ -157,6 +185,32 @@
 					}
 					
 					logProcess.push(function(msg){ $scope.addNote(msg.data); $scope.$apply(); })
+					
+					$scope.showSettings = false;
+					
+					$scope.settings = {
+						user: "Meow",
+						password: "test"
+					}
+					
+					$scope.showContacts = false;
+					
+					$scope.contacts = [];
+					
+					$scope.addNewContact = function(){
+						if($scope.currentContact.name == null || $scope.currentContact.name == ""){
+							$scope.addNote("Adding contact failed. A contact must have a name");
+							return;
+						}
+						
+						if($scope.currentContact.email == null || $scope.currentContact.email == ""){
+							$scope.addNote("Adding contact failed. A contact must have an email");
+							return;
+						}
+					
+						contacts.push(currentContact); 
+						contactMode='list';
+					}
 				});
 		</script>
 	</body>
