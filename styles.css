@@ -184,3 +184,22 @@ div.line{
 div.text{
 
 }
+
+.notifications-box{
+	position: fixed;
+	z-index: 200;
+	background: black;
+	color: darkgreen;
+	width: 50%;
+	margin: auto;
+	word-break: break-all;
+	left: 0;
+	right: 0;
+	padding: 20px;
+	box-shadow: 0 0 5px 0 white;
+	border-radius: 15px;
+	top: 20px;
+	cursor: pointer;
+	max-height: 80%;
+	overflow-y: auto;
+}

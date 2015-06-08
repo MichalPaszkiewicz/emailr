@@ -8,8 +8,13 @@ function logOpen() {
 	console.log("connected to WebSocket");
 }
 
+var logProcess = [];
+
 function logMessage(msg) {
-	console.log(msg);	   
+	console.log(msg);
+	for(var i = 0; i < logProcess.length; i++){
+		logProcess[i](msg);
+	}
 }
 
 function logClose() {

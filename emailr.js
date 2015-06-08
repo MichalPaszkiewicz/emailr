@@ -13,7 +13,7 @@ function w(html, wrapper, otherCss){
 	return "<" + wrapper + " style='" + otherCss + "' >" + html + "</" + wrapper + ">";
 }
 
-function sendEmail(subject, msg, to, cc, bcc){
+function sendEmail(subject, msg, to, cc, bcc, processLog){
 	// send the message and get a callback with an error or details of the message that was sent
 	server.send({
 	   text:    "This text should not be displayed", 
@@ -26,10 +26,10 @@ function sendEmail(subject, msg, to, cc, bcc){
 	   [
 		  {data:msg, alternative:true}
 	   ]
-	}, function(err, message) { console.log(err || "e-mail sent"); });
+	}, function(err, message) { processLog(err || "e-mail sent"); });
 }
 
-exports.generateEmail = function(subject, text, to, cc, bcc){
+exports.generateEmail = function(subject, text, to, cc, bcc, processLog){
 	fs.readFile('template.html', function(err, data){
 		console.log("Getting template");
 		if(err){ throw err; }
@@ -42,7 +42,7 @@ exports.generateEmail = function(subject, text, to, cc, bcc){
 		
 		var finalMsg = dataString.replace(/{TEXT}/g,msg);
 		
-		sendEmail(subject, finalMsg, to);
+		sendEmail(subject, finalMsg, to, cc, bcc, processLog);
 	});
 }
 

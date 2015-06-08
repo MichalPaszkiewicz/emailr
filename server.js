@@ -19,13 +19,11 @@ wss.on('connection', function (ws) {
 		switch(dataJSON.type){
 			case "email":
 				var theMsg = dataJSON.message;
-				emailr.generateEmail(theMsg.subject,theMsg.body,theMsg.to,theMsg.cc,theMsg.bcc); 
+				emailr.generateEmail(theMsg.subject,theMsg.body,theMsg.to,theMsg.cc,theMsg.bcc,function(err){ws.send(err);}); 
 				break;
 			default:
 				console.log("Unknown message type");
-		}
-		
-        //ws.send();
+		}	
     });
 
     ws.on("close", function () {
