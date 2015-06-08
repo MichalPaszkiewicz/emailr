@@ -214,10 +214,16 @@ div.text{
 	transition: top 0.5s;
 	-webkit-transition: top 0.5s;
 	-moz-transition: top 0.5s;
+	transition-timing-function: ease-out;
+	-webkit-transition-timing-function: ease-out;
+	-moz-transition-timing-function: ease-out;
 }
 
 .notifications-box.hidden{
-	top: -2000px;
+	top: -3000px;
+	transition-timing-function: ease-in;
+	-webkit-transition-timing-function: ease-in;
+	-moz-transition-timing-function: ease-in;
 }
 
 .notification-row{
