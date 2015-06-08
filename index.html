@@ -19,8 +19,13 @@
 				</div>
 			</div>
 			<div class="notifications-box" ng-class="{hidden:!showNotifications}">
+				<div class="notification-top">
+					<div class="button negative" ng-click="showNotifications=false">Close</div>
+					<div class="button negative" ng-click="notifications=[]">Clear</div>
+				</div>
+				<div class="notification-top-push"></div>
 				<div class="notification-row" ng-repeat="notification in notifications">@{{notification.time}}: {{notification.text}}</div>
-				<div class="button negative" ng-click="showNotifications=false">Close</div>
+				
 			</div>
 			<div class="header-push"></div>
 			<div class="box" ng-show="page=='welcome'">

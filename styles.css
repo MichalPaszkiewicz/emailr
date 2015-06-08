@@ -89,6 +89,11 @@ html,body{
 	padding: 10px;
 	display: inline-block;
 	cursor: pointer;
+	
+	-webkit-user-select: none; /* webkit (safari, chrome) browsers */
+    -moz-user-select: none; /* mozilla browsers */
+    -khtml-user-select: none; /* webkit (konqueror) browsers */
+    -ms-user-select: none; /* IE10+ */
 }
 
 .button.negative{
@@ -233,4 +238,23 @@ div.text{
 .notification-row{
 	padding: 10px 0;
 	border-bottom: 1px gray solid;
+}
+
+.notification-row:hover{
+	color: green;
+}
+
+.notification-top{
+	position: fixed;
+	background: rgba(0,0,0,0.5);
+	width: 40%;
+	min-width: 100px;
+	max-width: 400px;
+	border: 1px solid gray;
+	padding: 10px;
+	box-sizing: border-box;
+}
+
+.notification-top, .notification-top-push{
+	height:60px;
 }
