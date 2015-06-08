@@ -6,5 +6,3 @@ ECHO.
 ECHO *** Starting program ***
 ECHO.
 call node server.js
-
-pause;

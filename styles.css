@@ -211,19 +211,23 @@ div.text{
 	max-height: 80%;
 	overflow-y: auto;
 	
-	transition: top 0.5s;
-	-webkit-transition: top 0.5s;
-	-moz-transition: top 0.5s;
+	transition: all 0.2s;
+	-webkit-transition: all 0.2s;
+	-moz-transition: all 0.2s;
 	transition-timing-function: ease-out;
 	-webkit-transition-timing-function: ease-out;
 	-moz-transition-timing-function: ease-out;
 }
 
 .notifications-box.hidden{
-	top: -3000px;
+	top: -100%;
 	transition-timing-function: ease-in;
 	-webkit-transition-timing-function: ease-in;
 	-moz-transition-timing-function: ease-in;
+	
+	transform: scale(0.1);
+	-webkit-transform: scale(0.1);
+	-moz-transform: scale(0.1);
 }
 
 .notification-row{

@@ -125,6 +125,19 @@
 					}				
 					
 					$scope.sendMail = function(){
+						if($scope.currentOutMail.to == "" || $scope.currentOutMail.to == null){
+							$scope.addNote("Sending failed. The to address must be set");
+							return;
+						}
+						if($scope.currentOutMail.subject == "" || $scope.currentOutMail.subject == null){
+							$scope.addNote("Sending failed. The subject must be set");
+							return;
+						}
+						if($scope.currentOutMail.body == "" || $scope.currentOutMail.body == null){
+							$scope.addNote("Sending failed. The email must have a body");
+							return;
+						}
+					
 						$scope.currentOutMail.time = (new Date()).toGMTString();
 						sendMessage("email", $scope.currentOutMail);
 					}
@@ -133,7 +146,12 @@
 					
 					$scope.showNotifications = false;
 					
-					logProcess.push(function(msg){ $scope.notifications.push({time: (new Date()).toGMTString(), text: msg.data}); $scope.showNotifications = true; $scope.$apply(); })
+					$scope.addNote = function(txt){
+						$scope.notifications.push({time: (new Date()).toGMTString(), text: txt}); 
+						$scope.showNotifications = true;
+					}
+					
+					logProcess.push(function(msg){ $scope.addNote(msg.data); $scope.$apply(); })
 				});
 		</script>
 	</body>
