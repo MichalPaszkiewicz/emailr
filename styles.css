@@ -220,6 +220,7 @@ div.text{
 	z-index: 200;
 	background: rgba(0,0,0,0.8);
 	color: darkgreen;
+	min-width:300px;
 	width: 50%;
 	margin: auto;
 	word-break: break-all;
@@ -264,7 +265,7 @@ div.text{
 	position: fixed;
 	background: rgba(0,0,0,0.5);
 	width: 40%;
-	min-width: 100px;
+	min-width: 200px;
 	max-width: 400px;
 	border: 1px solid gray;
 	padding: 10px;
@@ -282,5 +283,11 @@ div.text{
 
 .contact-row:hover{
 	color:green;
-	background: rgb(3, 30, 3);
+	background: rgb(3, 22, 3);
+}
+
+.contact-row .button{
+	margin: 5px;
+	padding: 5px;
+	font-size: 12px;
 }

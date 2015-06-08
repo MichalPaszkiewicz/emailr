@@ -27,14 +27,22 @@
 				<div class="modal-top-push"></div>
 				<h1>Contacts</h1>
 				<div class="contact-list" ng-show="contactMode=='list'">
-					<div class="contact-row" ng-repeat="contact in contacts">
+					<div class="contact-row" ng-repeat="contact in contacts | orderBy:'name'">
 						<span class="list-column">{{contact.name}}</span>
 						<span class="list-column">{{contact.email}}</span>
+						<div class="button" ng-click="editContact(contact)">Edit</div>
+						<div class="button negative" ng-click="deleteContact(contact)">Delete</div>
 					</div>
+				</div>
+				<div class="edit-contact" ng-show="contactMode=='edit'">
+					<input ng-model="currentContact.name" placeholder="name">
+					<input ng-model="currentContact.email" placeholder="email">
+					<div class="button negative" ng-click="contactMode='list'">Back</div>
 				</div>
 				<div class="add-contact" ng-show="contactMode=='add'">
 					<input ng-model="currentContact.name" placeholder="name">
 					<input ng-model="currentContact.email" placeholder="email">
+					<div class="button negative" ng-click="contactMode='list'">Back</div>
 					<div class="button" ng-click="addNewContact()">Add</div>
 				</div>
 			</div>
@@ -208,8 +216,18 @@
 							return;
 						}
 					
-						contacts.push(currentContact); 
-						contactMode='list';
+						$scope.contacts.push($scope.currentContact); 
+						$scope.contactMode='list';
+					}
+					
+					$scope.deleteContact = function(item){
+						var itemIndex = $scope.contacts.indexOf(item);
+						$scope.contacts.splice(itemIndex,1);
+					}
+					
+					$scope.editContact = function(item){
+						$scope.currentContact=item;
+						$scope.contactMode='edit';
 					}
 				});
 		</script>
