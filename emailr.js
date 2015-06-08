@@ -13,12 +13,14 @@ function w(html, wrapper, otherCss){
 	return "<" + wrapper + " style='" + otherCss + "' >" + html + "</" + wrapper + ">";
 }
 
-function sendEmail(subject, msg){
+function sendEmail(subject, msg, to, cc, bcc){
 	// send the message and get a callback with an error or details of the message that was sent
 	server.send({
-	   text:    "This text will not be displayed", 
+	   text:    "This text should not be displayed", 
 	   from:    "Michal's node app noreply.testemail@gmail.com", 
-	   to:      "michalpaszkiewicz@hotmail.com",
+	   to:      to,
+	   cc: 		cc,
+	   bcc: 	bcc,
 	   subject: subject,
 	   attachment: 
 	   [
@@ -27,7 +29,7 @@ function sendEmail(subject, msg){
 	}, function(err, message) { console.log(err || "e-mail sent"); });
 }
 
-exports.generateEmail = function(subject, text){
+exports.generateEmail = function(subject, text, to, cc, bcc){
 	fs.readFile('template.html', function(err, data){
 		console.log("Getting template");
 		if(err){ throw err; }
@@ -40,7 +42,7 @@ exports.generateEmail = function(subject, text){
 		
 		var finalMsg = dataString.replace(/{TEXT}/g,msg);
 		
-		sendEmail(subject, finalMsg);
+		sendEmail(subject, finalMsg, to);
 	});
 }
 

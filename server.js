@@ -19,7 +19,7 @@ wss.on('connection', function (ws) {
 		switch(dataJSON.type){
 			case "email":
 				var theMsg = dataJSON.message;
-				emailr.generateEmail(theMsg.subject,theMsg.body); 
+				emailr.generateEmail(theMsg.subject,theMsg.body,theMsg.to,theMsg.cc,theMsg.bcc); 
 				break;
 			default:
 				console.log("Unknown message type");
