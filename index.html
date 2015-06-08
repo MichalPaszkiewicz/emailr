@@ -27,7 +27,8 @@
 				<div class="modal-top-push"></div>
 				<h1>Contacts</h1>
 				<div class="contact-list" ng-show="contactMode=='list'">
-					<div class="contact-row" ng-repeat="contact in contacts | orderBy:'name'">
+					<input ng-model="contactSearch" placeholder="Search">
+					<div class="contact-row" ng-repeat="contact in contacts | filter:contactSearch | orderBy:'name'">
 						<span class="list-column">{{contact.name}}</span>
 						<span class="list-column">{{contact.email}}</span>
 						<div class="button" ng-click="editContact(contact)">Edit</div>
