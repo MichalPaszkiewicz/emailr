@@ -93,8 +93,10 @@
 				<div class="button" ng-click="checkImage()">Check</div>
 				<div class="button" ng-click="clearCheck()">Clear check</div>
 				<div class="button" ng-click="openImageInNewFile()">Open</div>
+				<canvas id="drop-canvas"></canvas>
+				<script src="dropFile.js"></script>
 				<canvas id="my-canvas"></canvas>
-				<div>{{imageCheckText}}</div>
+				<pre>{{imageCheckText}}</pre>
 				<script>
 					var canvas = document.getElementById("my-canvas");
 					canvas.height = 100;

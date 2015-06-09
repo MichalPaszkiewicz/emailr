@@ -316,3 +316,7 @@ div.text{
 	color: darkgray;
 	background: rgb(32, 31, 31);
 }
+
+#drop-canvas{
+	border: 1px white solid;
+}
