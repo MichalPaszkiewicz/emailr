@@ -5,7 +5,7 @@
 		<script src="node_modules/angular/angular.min.js"></script>
 		<script src="message.js"></script>
 	</head>
-	<body ng-app="app" ng-controller="emailControl">
+	<body ng-app="app" ng-controller="emailControl" ng-cloak>
 		<div class="main-container">
 			<div class="header">
 				<h1 ng-click="go('welcome')">emailr</h1>
@@ -217,7 +217,15 @@
 						$scope.showNotifications = true;
 					}
 					
-					logProcess.push(function(msg){ $scope.addNote(msg.data); $scope.$apply(); })
+					logProcess.push(function(msg){ 
+						var data = JSON.parse(msg.data);
+						if(data.type = "img"){
+							img.src = data.message;
+						}
+						else{
+							$scope.addNote(data.message); $scope.$apply(); 
+						}
+					})
 					
 					$scope.showSettings = false;
 					
@@ -323,23 +331,27 @@
 						var bodyText = $scope.currentOutMail.body;
 						var j = 0;
 					
-						var data = ctx.createImageData(100, 100);
+						var data = dropContext.getImageData(0,0,100,100);
 
+						var pxCount = 0;
+						
 						for(var i = 0; i < data.data.length; i+=4)
-						{							
-							data.data[i] = Math.abs(4 * Math.random());
-							data.data[i+1] = Math.abs(4 * Math.random());
-							data.data[i+2] = Math.abs(4 * Math.random());
-							data.data[i+3] = 255 - Math.abs(4 * Math.random());	
+						{		
+							if(data.data[i] < 8 && data.data[i+1] < 8 && data.data[i+2] < 8 && data.data[i+3] > 245){
+								data.data[i] = Math.abs(4 * Math.random());
+								data.data[i+1] = Math.abs(4 * Math.random());
+								data.data[i+2] = Math.abs(4 * Math.random());
+								data.data[i+3] = 255 - Math.abs(4 * Math.random());	
 							
-							if(bodyText[j] != undefined){
-								var base4 = splitTo4s(bodyText[j]);
-								data.data[i] = parseInt(base4[0]);
-								data.data[i+1] = parseInt(base4[1]);
-								data.data[i+2] = parseInt(base4[2]);
-								data.data[i+3] = 255 - parseInt(base4[3]);
-								j++;	
-							}							
+								if(bodyText[j] != undefined){
+									var base4 = splitTo4s(bodyText[j]);
+									data.data[i] = parseInt(base4[0]);
+									data.data[i+1] = parseInt(base4[1]);
+									data.data[i+2] = parseInt(base4[2]);
+									data.data[i+3] = 255 - parseInt(base4[3]);
+									j++;	
+								}
+							}								
 						}
 
 						ctx.putImageData(data,0,0);
@@ -352,8 +364,10 @@
 						var newText = "";
 						for(var i = 0; i < data.data.length; i+=4)
 						{
-							var stringLetter = fromBase4((data.data[i] + "") + (data.data[i+1] + "") + (data.data[i+2] + "") + ((255-data.data[i+3]) + ""));
-							newText += String.fromCharCode(stringLetter)
+							if(data.data[i] < 8 && data.data[i+1] < 8 && data.data[i+2] < 8 && data.data[i+3] > 245){
+								var stringLetter = fromBase4((data.data[i] + "") + (data.data[i+1] + "") + (data.data[i+2] + "") + ((255-data.data[i+3]) + ""));
+								newText += String.fromCharCode(stringLetter)
+							}
 						}
 					
 						$scope.imageCheckText = newText;

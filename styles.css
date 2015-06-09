@@ -317,6 +317,14 @@ div.text{
 	background: rgb(32, 31, 31);
 }
 
-#drop-canvas{
+canvas{
 	border: 1px white solid;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+pre{
+	word-wrap: break-word;
 }

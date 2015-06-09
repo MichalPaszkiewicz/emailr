@@ -1,5 +1,6 @@
 var WebSocket = require('ws');
 var emailr = require("./emailr.js");
+var fs = require("fs");
 
 var WebSocketServer = WebSocket.Server;
 
@@ -7,7 +8,13 @@ var wss = new WebSocketServer({ port: 8080 });
 
 wss.on('connection', function (ws) {
 
+	function sendMessage(type, message){
+		var item = {type: type, message: message};
+		ws.send(JSON.stringify(item));
+	}
+
     ws.on('message', function (message) {
+		
         var logmsg = ('received: ' + message);
         if(message.length > 70){
             logmsg = logmsg.substring(0,70) + "...";
@@ -19,7 +26,10 @@ wss.on('connection', function (ws) {
 		switch(dataJSON.type){
 			case "email":
 				var theMsg = dataJSON.message;
-				emailr.generateEmail(theMsg.subject,theMsg.body,theMsg.to,theMsg.cc,theMsg.bcc,function(err){ws.send(err);}); 
+				emailr.generateEmail(theMsg.subject,theMsg.body,theMsg.to,theMsg.cc,theMsg.bcc,function(err){sendMessage("err",err);}); 
+				break;
+			case "img":
+				sendMessage("img",fs.readFileSync("./dataURL.txt").toString());
 				break;
 			default:
 				console.log("Unknown message type");

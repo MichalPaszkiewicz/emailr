@@ -1,8 +1,8 @@
-var dropCanvas, dropContext;
+var dropCanvas, dropContext, img;
 (function () {
 	dropCanvas = document.getElementById("drop-canvas");
 	dropContext = dropCanvas.getContext("2d");
-	var	img = document.createElement("img"),
+	img = document.createElement("img"),
 		clearCanvas = function () {
 			dropContext.clearRect(0, 0, dropCanvas.width, dropCanvas.height);
 		};
