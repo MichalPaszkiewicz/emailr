@@ -44,7 +44,8 @@
 					<input ng-model="currentContact.name" placeholder="name">
 					<input ng-model="currentContact.email" placeholder="email">
 					<div class="button negative" ng-click="contactMode='list'">Back</div>
-					<div class="button" ng-click="addNewContact()">Add</div>
+					<div class="button" ng-click="addNewContact(true);">Add</div>
+					<div class="button" ng-click="addNewContact(); currentContact={}">Add and new</div>
 				</div>
 			</div>
 			<div class="modal" ng-class="{hidden:!showNotifications}">
@@ -88,6 +89,18 @@
 				<input placeholder="subject" ng-model="currentOutMail.subject" ng-focus="focusOn('subject')"/>
 				<textarea placeholder="body" ng-model="currentOutMail.body" ng-focus="focusOn('body')"></textarea>
 				<div class="button" ng-click="sendMail()">Send</div>
+				<div class="button" ng-click="generateImage()">Image</div>
+				<div class="button" ng-click="checkImage()">Check</div>
+				<div class="button" ng-click="clearCheck()">Clear check</div>
+				<div class="button" ng-click="openImageInNewFile()">Open</div>
+				<canvas id="my-canvas"></canvas>
+				<div>{{imageCheckText}}</div>
+				<script>
+					var canvas = document.getElementById("my-canvas");
+					canvas.height = 100;
+					canvas.width = 100;
+					var ctx = canvas.getContext("2d");
+				</script>
 			</div>
 			<div class="box" ng-show="page=='my-emails'">
 				<div class="button negative" ng-click="back()">Back</div>
@@ -219,7 +232,7 @@
 						{name:"bob",email:"bob.robertson@hotmail.com"}
 					];
 					
-					$scope.addNewContact = function(){
+					$scope.addNewContact = function(goBack){
 						if($scope.currentContact.name == null || $scope.currentContact.name == ""){
 							$scope.addNote("Adding contact failed. A contact must have a name");
 							return;
@@ -231,7 +244,10 @@
 						}
 					
 						$scope.contacts.push($scope.currentContact); 
-						$scope.contactMode='list';
+						
+						if(goBack){
+							$scope.contactMode='list';
+						}
 					}
 					
 					$scope.deleteContact = function(item){
@@ -279,6 +295,74 @@
 						}
 						
 						$scope.currentOutMail[item] = commaSplits.join(", ");
+					}
+					
+					function splitTo4s(number){
+						var base4 = number.charCodeAt(0).toString(4);
+						
+						while(base4.length < 4){
+							base4 = "0" + base4;
+						}
+						
+						return base4;
+					}
+					
+					function fromBase4(number){
+						var num = 0;
+						num += number[0] * Math.pow(4,3);
+						num += number[1] * Math.pow(4,2);
+						num += number[2] * 4;
+						num += parseInt(number[3]);
+						
+						return num;
+					}
+					
+					$scope.generateImage = function(){
+						var bodyText = $scope.currentOutMail.body;
+						var j = 0;
+					
+						var data = ctx.createImageData(100, 100);
+
+						for(var i = 0; i < data.data.length; i+=4)
+						{							
+							data.data[i] = Math.abs(4 * Math.random());
+							data.data[i+1] = Math.abs(4 * Math.random());
+							data.data[i+2] = Math.abs(4 * Math.random());
+							data.data[i+3] = 255 - Math.abs(4 * Math.random());	
+							
+							if(bodyText[j] != undefined){
+								var base4 = splitTo4s(bodyText[j]);
+								data.data[i] = parseInt(base4[0]);
+								data.data[i+1] = parseInt(base4[1]);
+								data.data[i+2] = parseInt(base4[2]);
+								data.data[i+3] = 255 - parseInt(base4[3]);
+								j++;	
+							}							
+						}
+
+						ctx.putImageData(data,0,0);
+						
+						$scope.currentOutMail.body = "";
+					}
+					
+					$scope.checkImage = function(){
+						var data = ctx.getImageData(0,0,100,100);
+						var newText = "";
+						for(var i = 0; i < data.data.length; i+=4)
+						{
+							var stringLetter = fromBase4((data.data[i] + "") + (data.data[i+1] + "") + (data.data[i+2] + "") + ((255-data.data[i+3]) + ""));
+							newText += String.fromCharCode(stringLetter)
+						}
+					
+						$scope.imageCheckText = newText;
+					}
+					
+					$scope.clearCheck = function(){
+						$scope.imageCheckText = "";
+					}
+					
+					$scope.openImageInNewFile = function(){
+						window.open(canvas.toDataURL());
 					}
 				});
 		</script>

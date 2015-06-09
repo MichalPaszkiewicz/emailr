@@ -6,6 +6,11 @@ html,body{
 	font-family: Arial;
 }
 
+canvas{
+	display: block;
+	margin: 10px;
+}
+
 .main-container{
 	min-height: 100%;
 	color: gray;
