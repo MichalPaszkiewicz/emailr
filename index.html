@@ -73,20 +73,20 @@
 			<div class="box" ng-show="page=='email'">
 				<div class="button negative" ng-click="back()">Back</div>
 				<div class="button" ng-click="clearCurrentOutMail()">Clear</div>
-				<input placeholder="to" ng-model="currentOutMail.to"/>
-				<ul class="autocomplete-list">
-					<li ng-repeat="contact in contacts | filter:lastMail(currentOutMail.to)" ng-click="addMailTo(contact, 'to')">{{contact.email}}</li>
+				<input placeholder="to" ng-model="currentOutMail.to" ng-focus="focusOn('to')"/>
+				<ul class="autocomplete-list" ng-focus="focusOn('to')">
+					<li ng-repeat="contact in contacts | filter:lastMail('to')"  ng-click="addMailTo(contact, 'to')">{{contact.email}}</li>
 				</ul>
-				<input placeholder="cc" ng-model="currentOutMail.cc"/>
-				<ul class="autocomplete-list">
-					<li ng-repeat="contact in contacts | filter:lastMail(currentOutMail.cc)" ng-click="addMailTo(contact, 'cc')">{{contact.email}}</li>
+				<input placeholder="cc" ng-model="currentOutMail.cc" ng-focus="focusOn('cc')"/>
+				<ul class="autocomplete-list" ng-focus="focusOn('cc')">
+					<li ng-repeat="contact in contacts | filter:lastMail('cc')" ng-click="addMailTo(contact, 'cc')">{{contact.email}}</li>
 				</ul>
-				<input placeholder="bcc" ng-model="currentOutMail.bcc"/>
-				<ul class="autocomplete-list">
-					<li ng-repeat="contact in contacts | filter:lastMail(currentOutMail.bcc)" ng-click="addMailTo(contact, 'bcc')">{{contact.email}}</li>
+				<input placeholder="bcc" ng-model="currentOutMail.bcc" ng-focus="focusOn('bcc')"/>
+				<ul class="autocomplete-list" ng-focus="focusOn('bcc')">
+					<li ng-repeat="contact in contacts | filter:lastMail('bcc')" ng-click="addMailTo(contact, 'bcc')">{{contact.email}}</li>
 				</ul>
-				<input placeholder="subject" ng-model="currentOutMail.subject"/>
-				<textarea placeholder="body" ng-model="currentOutMail.body"></textarea>
+				<input placeholder="subject" ng-model="currentOutMail.subject" ng-focus="focusOn('subject')"/>
+				<textarea placeholder="body" ng-model="currentOutMail.body" ng-focus="focusOn('body')"></textarea>
 				<div class="button" ng-click="sendMail()">Send</div>
 			</div>
 			<div class="box" ng-show="page=='my-emails'">
@@ -244,8 +244,18 @@
 						$scope.contactMode='edit';
 					}
 					
-					$scope.lastMail = function(stringItem){
+					$scope.mailFocus = "";
+					
+					$scope.focusOn = function(stringThing){
+						$scope.mailFocus = stringThing;
+					}
+					
+					$scope.lastMail = function(focusItem){					
 						return function(item){
+							var stringItem = $scope.currentOutMail[focusItem];
+							if($scope.mailFocus != focusItem){
+								return false;
+							}
 							if(stringItem == undefined){
 								return false;
 							}
@@ -264,7 +274,7 @@
 						for(var i = 0; i < commaSplits.length; i++){
 							commaSplits[i] = commaSplits[i].replace(/ /g,"");
 							if(i == commaSplits.length - 1){
-								commaSplits[i] = itemToAdd.email + ",";
+								commaSplits[i] = itemToAdd.email + ", ";
 							}
 						}
 						
