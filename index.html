@@ -74,8 +74,17 @@
 				<div class="button negative" ng-click="back()">Back</div>
 				<div class="button" ng-click="clearCurrentOutMail()">Clear</div>
 				<input placeholder="to" ng-model="currentOutMail.to"/>
+				<ul class="autocomplete-list">
+					<li ng-repeat="contact in contacts | filter:lastMail(currentOutMail.to)" ng-click="addMailTo(contact, 'to')">{{contact.email}}</li>
+				</ul>
 				<input placeholder="cc" ng-model="currentOutMail.cc"/>
+				<ul class="autocomplete-list">
+					<li ng-repeat="contact in contacts | filter:lastMail(currentOutMail.cc)" ng-click="addMailTo(contact, 'cc')">{{contact.email}}</li>
+				</ul>
 				<input placeholder="bcc" ng-model="currentOutMail.bcc"/>
+				<ul class="autocomplete-list">
+					<li ng-repeat="contact in contacts | filter:lastMail(currentOutMail.bcc)" ng-click="addMailTo(contact, 'bcc')">{{contact.email}}</li>
+				</ul>
 				<input placeholder="subject" ng-model="currentOutMail.subject"/>
 				<textarea placeholder="body" ng-model="currentOutMail.body"></textarea>
 				<div class="button" ng-click="sendMail()">Send</div>
@@ -204,7 +213,11 @@
 					
 					$scope.showContacts = false;
 					
-					$scope.contacts = [];
+					$scope.contacts = [
+						{name:"meow",email:"meow@meow.com"},
+						{name:"woof",email:"woof@woof.com"},
+						{name:"bob",email:"bob.robertson@hotmail.com"}
+					];
 					
 					$scope.addNewContact = function(){
 						if($scope.currentContact.name == null || $scope.currentContact.name == ""){
@@ -229,6 +242,33 @@
 					$scope.editContact = function(item){
 						$scope.currentContact=item;
 						$scope.contactMode='edit';
+					}
+					
+					$scope.lastMail = function(stringItem){
+						return function(item){
+							if(stringItem == undefined){
+								return false;
+							}
+							var lastMail = stringItem.replace(/ /g,'').split(',').pop();
+							if(lastMail == "" || lastMail == null){
+								return false;
+							}			
+							return (item.name.indexOf(lastMail) != -1) || (item.email.indexOf(lastMail) != -1);
+						}
+					}
+					
+					$scope.addMailTo = function(itemToAdd, item){
+						var currentString = $scope.currentOutMail[item];
+						var commaSplits = currentString.split(",");
+						
+						for(var i = 0; i < commaSplits.length; i++){
+							commaSplits[i] = commaSplits[i].replace(/ /g,"");
+							if(i == commaSplits.length - 1){
+								commaSplits[i] = itemToAdd.email + ",";
+							}
+						}
+						
+						$scope.currentOutMail[item] = commaSplits.join(", ");
 					}
 				});
 		</script>
