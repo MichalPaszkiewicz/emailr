@@ -7,7 +7,7 @@ socket.onclose = logClose;
 function logOpen() {
 	console.log("connected to WebSocket");
 	
-	sendMessage("img");
+	sendMessage("get-img");
 }
 
 var logProcess = [];

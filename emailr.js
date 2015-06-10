@@ -24,7 +24,8 @@ function sendEmail(subject, msg, to, cc, bcc, processLog){
 	   subject: subject,
 	   attachment: 
 	   [
-		  {data:msg, alternative:true}
+			{data:msg, alternative:true},
+			{path:"default.png", type:"image/gif", name:"image.png"}
 	   ]
 	}, function(err, message) { processLog(err || "e-mail sent"); });
 }
@@ -39,9 +40,9 @@ exports.generateEmail = function(subject, text, to, cc, bcc, processLog){
 		var txt = text;
 		var msg = w(subject,"h1") + w(txt,"p");
 		console.log("message: \r\n" + msg);
-		
+
 		var finalMsg = dataString.replace(/{TEXT}/g,msg);
-		
+	
 		sendEmail(subject, finalMsg, to, cc, bcc, processLog);
 	});
 }

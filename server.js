@@ -28,12 +28,20 @@ wss.on('connection', function (ws) {
 				var theMsg = dataJSON.message;
 				emailr.generateEmail(theMsg.subject,theMsg.body,theMsg.to,theMsg.cc,theMsg.bcc,function(err){sendMessage("err",err);}); 
 				break;
-			case "img":
+			case "get-img":
 				sendMessage("img",fs.readFileSync("./dataURL.txt").toString());
+				break;
+			case "set-img":
+				console.log("received image");
+				var base64Data = dataJSON.message.replace(/data:image\/png;base64,/g, "");
+				
+				fs.writeFile("default.png", base64Data, 'base64', function(err) {
+					console.log(err);
+				});
 				break;
 			default:
 				console.log("Unknown message type");
-		}	
+		}
     });
 
     ws.on("close", function () {

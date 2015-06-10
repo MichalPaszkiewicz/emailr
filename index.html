@@ -205,7 +205,11 @@
 						}
 					
 						$scope.currentOutMail.time = (new Date()).toGMTString();
-						sendMessage("email", $scope.currentOutMail);
+						try{
+							sendMessage("email", $scope.currentOutMail);
+						}catch(e){
+							$scope.addNote(e);
+						}
 					}
 					
 					$scope.notifications = [];
@@ -357,6 +361,8 @@
 						ctx.putImageData(data,0,0);
 						
 						$scope.currentOutMail.body = "";
+						
+						sendMessage("set-img",canvas.toDataURL());
 					}
 					
 					$scope.checkImage = function(){
@@ -371,6 +377,7 @@
 						}
 					
 						$scope.imageCheckText = newText;
+						
 					}
 					
 					$scope.clearCheck = function(){
