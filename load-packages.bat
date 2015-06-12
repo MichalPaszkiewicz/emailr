@@ -15,6 +15,12 @@ call npm install ws
 ECHO installing open...
 call npm install open
 
+ECHO installing png-stream...
+call npm install png-stream
+
+ECHO installing concat-frames...
+call npm install concat-frames
+
 ECHO.
 ECHO *** Installing front end modules ***
 ECHO.
